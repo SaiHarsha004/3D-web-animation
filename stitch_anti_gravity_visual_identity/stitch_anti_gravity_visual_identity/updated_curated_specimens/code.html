@@ -1,0 +1,89 @@
+<html><head>
+<meta charset="utf-8"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&amp;family=Inter:wght@300;400&amp;display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          serif: ['"Cormorant Garamond"', 'serif'],
+          sans: ['Inter', 'sans-serif'],
+        },
+        colors: {
+          gold: '#d4a843',
+        }
+      }
+    }
+  }
+</script>
+</head><body><section class="w-full bg-[#142114] py-20 px-8">
+<div class="max-w-screen-2xl mx-auto w-full flex flex-col gap-12">
+<div class="w-full text-center">
+<h2 class="font-serif text-5xl text-white tracking-tight mb-4">Curated Specimens</h2>
+<p class="font-sans text-lg text-white/70 font-light max-w-xl mx-auto">
+        Discover our hand-selected collection of rare and exceptional botanical pieces, designed to bring life and sophistication to any space.
+      </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Product Card 1 -->
+<article class="flex flex-col bg-[#1e3a1e] border border-[rgba(255,255,255,0.1)] rounded-[16px] backdrop-blur-[20px] transition-all duration-300 hover:scale-[1.02] hover:border-[rgba(255,255,255,0.3)]">
+<div class="aspect-[4/5] overflow-hidden rounded-t-[16px]">
+<img alt="Monstera Deliciosa" class="object-cover w-full h-full" data-alt="close up shot of a large monstera deliciosa plant with lush green fenestrated leaves against a dark moody background with dramatic side lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArh5ppD2G_Z2oTiqfcJz0HRKccOm1rXnfGxh28gkq_I1qFhJjH8NTJ-aLNhXOZtkg_1pOboAFQnS9YRON_-qiNzns9JqEPkvRwBkl6-qV3K2vGXYw15iqHES08ceNjsrVqw1yA5mzCon1Kr0xFtylHpsD1eqpD97CCvKx_F06_Aup6yRCjNAThoFlEFVrzjOnh62Xz4Ar1UI7KjDmcOeDYjP91Y2xcqnn7rz7p_a5Bl1yK5cXxEb46IfPUZpic-GyPd-5cPmPLTedv"/>
+</div>
+<div class="p-6 flex flex-col flex-grow gap-4">
+<div>
+<h3 class="font-serif font-bold text-[22px] text-white">Monstera Albo</h3>
+<span class="font-sans text-[16px] text-gold block mt-1">₹12,500</span>
+</div>
+<p class="font-sans font-light text-[14px] text-white/70 flex-grow">
+            A striking and highly sought-after variegated specimen, featuring iconic split leaves with stunning white marbling.
+          </p>
+<button class="w-full py-3 px-6 mt-4 bg-transparent border border-white text-white font-sans text-sm tracking-widest rounded transition-all duration-300 hover:bg-white hover:text-[#1e3a1e] flex items-center justify-center gap-2 group/btn uppercase">
+<span>Add to Cart</span>
+<span class="material-symbols-outlined text-[1.2em] transition-transform group-hover/btn:translate-x-1" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Product Card 2 -->
+<article class="flex flex-col bg-[#1e3a1e] border border-[rgba(255,255,255,0.1)] rounded-[16px] backdrop-blur-[20px] transition-all duration-300 hover:scale-[1.02] hover:border-[rgba(255,255,255,0.3)]">
+<div class="aspect-[4/5] overflow-hidden rounded-t-[16px]">
+<img alt="Philodendron Pink Princess" class="object-cover w-full h-full" data-alt="close up of a philodendron pink princess plant showing deep green leaves with vibrant pink splashes against a dark minimalist background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbEDAtbMJ--ozn-7AVLoxwbe1APm7e0vNCeBUSSXhrkMZvd8Vdzt3At3qFiyvGlwFnxwtL3LxrEcsWM85RVypyyyBQcTgr0fyWJvNcbPT3sc4esdJo-KydUBEa5HeSeYjTQlCAJdTLzg2kgHeTj7qqIgZd-nJUIAX_AnwKaO1NzFshBJNCnomgWEnPhjMn6VHTY2iyGWwUrdcMcxI8fJZ-egpNjpyzqhLPn7Cvt_NArIMiWR6yeFQW_GxDkmRQg7GtVViVaKtqxbKM"/>
+</div>
+<div class="p-6 flex flex-col flex-grow gap-4">
+<div>
+<h3 class="font-serif font-bold text-[22px] text-white">Pink Princess</h3>
+<span class="font-sans text-[16px] text-gold block mt-1">₹8,900</span>
+</div>
+<p class="font-sans font-light text-[14px] text-white/70 flex-grow">
+            Renowned for its deep green, almost black leaves adorned with vibrant, bubblegum pink variegation. A true collector's gem.
+          </p>
+<button class="w-full py-3 px-6 mt-4 bg-transparent border border-white text-white font-sans text-sm tracking-widest rounded transition-all duration-300 hover:bg-white hover:text-[#1e3a1e] flex items-center justify-center gap-2 group/btn uppercase">
+<span>Add to Cart</span>
+<span class="material-symbols-outlined text-[1.2em] transition-transform group-hover/btn:translate-x-1" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Product Card 3 -->
+<article class="flex flex-col bg-[#1e3a1e] border border-[rgba(255,255,255,0.1)] rounded-[16px] backdrop-blur-[20px] transition-all duration-300 hover:scale-[1.02] hover:border-[rgba(255,255,255,0.3)]">
+<div class="aspect-[4/5] overflow-hidden rounded-t-[16px]">
+<img alt="Ficus Lyrata" class="object-cover w-full h-full" data-alt="a majestic fiddle leaf fig tree in a sleek dark planter situated in a dimly lit sophisticated room with natural light highlighting its large glossy leaves" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzlbLqMUtocTJRGf1iwTpqAXsrQgZeqCOdW5RESNip19PLnpZ-VTuvc_w7LcSm7sNslwbT3QNKK6vzAZw7tXJ3ikTeibquEqE9tYRuqX1d8-0yik1kBO32HmIxVjCcpPWRcAbE1h6k7BZYj_hYB3orqxPTEAH9phnwcdQ-GNKvffrfTjAgyCfPQIYIYq_fxW702GPbGnPxIEvj3H282qyB9Y7Ob3hSEhNbHdRiGnZC_1WOwPwkOWyzVb9YmTHBFFq_LtpjcR6QQ1OU"/>
+</div>
+<div class="p-6 flex flex-col flex-grow gap-4">
+<div>
+<h3 class="font-serif font-bold text-[22px] text-white">Ficus Lyrata</h3>
+<span class="font-sans text-[16px] text-gold block mt-1">₹15,200</span>
+</div>
+<p class="font-sans font-light text-[14px] text-white/70 flex-grow">
+            The classic Fiddle Leaf Fig, presented as a mature, multi-branched tree. Provides dramatic structural impact.
+          </p>
+<button class="w-full py-3 px-6 mt-4 bg-transparent border border-white text-white font-sans text-sm tracking-widest rounded transition-all duration-300 hover:bg-white hover:text-[#1e3a1e] flex items-center justify-center gap-2 group/btn uppercase">
+<span>Add to Cart</span>
+<span class="material-symbols-outlined text-[1.2em] transition-transform group-hover/btn:translate-x-1" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</article>
+</div>
+</div>
+</section></body></html>

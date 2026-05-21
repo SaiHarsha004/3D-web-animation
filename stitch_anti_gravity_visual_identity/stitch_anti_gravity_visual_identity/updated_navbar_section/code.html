@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BOTANICA</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400..900;1,400..900&amp;family=Inter:wght@100..900&amp;family=DM+Serif+Display:ital@0;1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#2a2a2a",
+                        "primary-fixed": "#c1ecd4",
+                        "on-surface": "#ffffff",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-tertiary-container": "#75b393",
+                        "tertiary-fixed-dim": "#95d4b3",
+                        "background": "#0a0f0a",
+                        "outline-variant": "#414844",
+                        "on-secondary-container": "#342800",
+                        "surface-container-low": "#1b1b1b",
+                        "on-background": "#e2e2e2",
+                        "on-secondary-fixed": "#241a00",
+                        "primary": "#a5d0b9",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#e2e2e2",
+                        "surface-bright": "#393939",
+                        "inverse-on-surface": "#303030",
+                        "surface-container": "#1f1f1f",
+                        "on-primary-container": "#86af99",
+                        "on-primary": "#0e3727",
+                        "surface-variant": "#353535",
+                        "secondary": "#d4a843",
+                        "primary-container": "#1b4332",
+                        "surface": "#0a0f0a",
+                        "primary-fixed-dim": "#a5d0b9",
+                        "on-tertiary": "#003824",
+                        "on-tertiary-fixed-variant": "#0e5138",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#ffe088",
+                        "surface-container-highest": "#353535",
+                        "tertiary-fixed": "#b1f0ce",
+                        "surface-tint": "#a5d0b9",
+                        "on-tertiary-fixed": "#002114",
+                        "secondary-container": "#af8d11",
+                        "on-primary-fixed": "#002114",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-surface-variant": "#e5e7eb",
+                        "error-container": "#93000a",
+                        "tertiary": "#95d4b3",
+                        "on-secondary": "#3c2f00",
+                        "tertiary-container": "#00452e",
+                        "on-error": "#690005",
+                        "on-primary-fixed-variant": "#274e3d",
+                        "inverse-primary": "#3f6653",
+                        "surface-container-lowest": "#0a0f0a",
+                        "outline": "#8b938d",
+                        "surface-dim": "#131313"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Noto Serif"],
+                        "body": ["Inter"],
+                        "label": ["Inter"],
+                        "accent": ["DM Serif Display"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6, .font-headline {
+            font-family: 'Noto Serif', serif;
+        }
+        .font-accent {
+            font-family: 'DM Serif Display', serif;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen relative">
+<!-- Hero Section to show off the navbar -->
+<div class="relative min-h-screen flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container to-surface"></div>
+<img alt="Botanical Background" class="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay" data-alt="close up of lush green monstera leaves in a dimly lit tropical greenhouse with soft diffused light filtering through" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFOlFhQu-7ZkmiSTTeq223ZdabOj1nkN9qxAoD5PNqXbSWgfZGIoSsTzc_E5XGvKOXKv64ybWtmvmUziqSLKRX4yN6sI-qta5-BSohKq2O9ej5r49KROu0-N8lx3O6mRc9sUbTBhVV6GR3xS1ykHdtrtL4MnnfsTKuf8RPKboDyufs3ivyjdIPVTYXZxE2LPsQl61u-1DT6wsjEzIVxchDpO4j4PODH7uHRuyFyMw4qRFROvWXGrPgesIWKuPtGRLkaYYHfSV_MB4x"/>
+<div class="relative z-10 text-center px-4 max-w-4xl mx-auto mt-20">
+<h1 class="font-headline text-6xl md:text-8xl tracking-tighter font-extrabold text-on-surface mb-6">The Verdant Collection</h1>
+<p class="font-body text-xl md:text-2xl font-light tracking-wide text-on-surface-variant max-w-2xl mx-auto leading-relaxed">Curated botanical specimens for the discerning collector. A study in depth, texture, and organic form.</p>
+</div>
+</div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[rgba(45,92,45,0.4)] backdrop-blur-2xl no-border shadow-none shadow-[0_8px_32px_rgba(14,55,39,0.3)]">
+<div class="flex justify-between items-center w-full px-8 py-6 max-w-screen-2xl mx-auto">
+<!-- Brand -->
+<div class="flex items-center">
+<a class="text-2xl font-headline font-serif tracking-[0.2em] text-secondary uppercase font-extrabold" href="#">BOTANICA</a>
+</div>
+<!-- Desktop Navigation -->
+<div class="hidden md:flex items-center gap-12 font-body text-sm font-light tracking-wide">
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 scale-95 active:scale-90 duration-200 ease-in-out" href="#">Home</a>
+<a class="text-on-surface/70 hover:text-white transition-colors duration-300 scale-95 active:scale-90 ease-in-out" href="#">Shop</a>
+<a class="text-on-surface/70 hover:text-white transition-colors duration-300 scale-95 active:scale-90 ease-in-out" href="#">About</a>
+<a class="text-on-surface/70 hover:text-white transition-colors duration-300 scale-95 active:scale-90 ease-in-out" href="#">Contact</a>
+</div>
+<!-- Trailing Icons -->
+<div class="flex items-center gap-6">
+<button class="text-primary hover:text-white transition-colors duration-300 scale-95 active:scale-90 ease-in-out">
+<span class="material-symbols-outlined text-2xl" data-icon="shopping_cart">shopping_cart</span>
+</button>
+<!-- Mobile Menu Toggle (Visible only on small screens) -->
+<button class="md:hidden text-primary hover:text-white transition-colors duration-300 scale-95 active:scale-90 ease-in-out">
+<span class="material-symbols-outlined text-2xl" data-icon="menu">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Content Sections to allow scrolling -->
+<section class="py-32 px-8 max-w-screen-2xl mx-auto bg-surface-container-lowest relative z-10">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-center">
+<div class="md:col-span-5 md:col-start-2">
+<h2 class="font-headline text-4xl md:text-5xl tracking-tight font-bold mb-8">Intentional Form</h2>
+<p class="font-body text-lg text-on-surface-variant font-light leading-relaxed mb-10 pl-8 border-l border-outline-variant/30 relative">
+<span class="absolute -left-3 top-0 text-secondary opacity-50 font-accent text-4xl">"</span>
+                    Each piece in our collection is selected not just for its beauty, but for its architectural presence in a curated space.
+                 </p>
+<button class="bg-secondary text-on-secondary px-8 py-4 rounded font-body text-sm uppercase tracking-widest font-semibold hover:bg-secondary-fixed transition-colors">Explore Gallery</button>
+</div>
+<div class="md:col-span-6 relative group h-[600px] overflow-hidden">
+<div class="absolute inset-0 bg-surface-container-high transition-colors duration-500 group-hover:bg-primary-container/20 z-0 rounded"></div>
+<img alt="Featured Plant" class="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-luminosity group-hover:mix-blend-normal transition-all duration-700 scale-105 group-hover:scale-100 z-10" data-alt="minimalist architectural shot of an agave plant against a dark textured concrete wall" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHjWtRb3DGCZcryUuGbu3KvAU0QQEYWXhporccAIm7Rq7lKLkaHcbf-y2krP4yl_hWy71COO4CDJ9Vbd09svoSpz1Z7PlUkyEdGAnarRrDmuvJRQBxgOQ4ABUbxvX5IQukj1Q65_H8q-6T-O_e2_yP_rweyKBDchTVvJOnCK8AXzGB2GtLkCqvYz48hHqVaEoGxQlAhK-IfJubPXszLJYLoo29W8wSt_6FyxihKg1PB7xovSoBRybPoknpfZg_5yQG-wCITA33qGl_"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent z-20"></div>
+</div>
+</div>
+</section>
+</body></html>

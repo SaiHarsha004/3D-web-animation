@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Verdant</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,400..900;1,400..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#0a0f0a",
+                        "forest-depth": "#142114",
+                        "deep-canopy": "#1e3a1e",
+                        "jungle-green": "#2d5c2d",
+                        "sunlight": "#e8c068",
+                        "leaf-mist": "#a8c5a0"
+                    },
+                    "fontFamily": {
+                        "headline": ["Noto Serif Display", "serif"],
+                        "body": ["Manrope", "sans-serif"],
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Manrope', sans-serif; background-color: #0a0f0a; color: #ffffff; margin: 0; overflow-x: hidden; }
+        
+        .font-headline { font-family: 'Noto Serif Display', serif; }
+        
+        /* Navbar Links Hover Underline */
+        .nav-link {
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: #ffffff;
+            transition: width 0.3s ease-in-out;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Animated Grain Texture */
+        .grain-overlay {
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.15;
+            pointer-events: none;
+            animation: grain 8s steps(10) infinite;
+            z-index: 15;
+            mix-blend-mode: overlay;
+        }
+
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -10%); }
+            20% { transform: translate(-15%, 5%); }
+            30% { transform: translate(7%, -25%); }
+            40% { transform: translate(-5%, 25%); }
+            50% { transform: translate(-15%, 10%); }
+            60% { transform: translate(15%, 0%); }
+            70% { transform: translate(0%, 15%); }
+            80% { transform: translate(3%, 35%); }
+            90% { transform: translate(-10%, 10%); }
+        }
+
+        /* Scroll Indicator Bounce */
+        @keyframes subtle-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+        .animate-subtle-bounce {
+            animation: subtle-bounce 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        /* Cart Badge Bounce */
+        @keyframes badge-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+        }
+        .animate-badge-bounce {
+            animation: badge-bounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Scroll Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2,0.8,0.2,1);
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        @keyframes subtle-shake {
+            0% { transform: translateX(0); border-color: #ef4444; }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); border-color: #ef4444; }
+        }
+        .animate-subtle-shake {
+            animation: subtle-shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #050805; }
+        ::-webkit-scrollbar-thumb { background: #2d5c2d; }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(45,92,45,0.4); }
+            50% { box-shadow: 0 0 25px rgba(45,92,45,0.8); }
+        }
+        .animate-pulse-glow { animation: pulse-glow 2s infinite; }
+
+        @media (min-width: 768px) {
+            body, a, button, input, textarea, select { cursor: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-surface text-white antialiased relative">
+    
+    <!-- Cinematic Loader -->
+    <div id="page-loader" class="fixed inset-0 bg-black z-[100] flex items-center justify-center transition-opacity duration-1000 pointer-events-none">
+        <svg class="w-24 h-24 stroke-jungle-green fill-none stroke-[2]" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-dasharray="300" stroke-dashoffset="300" d="M50 90 Q20 50 50 10 Q80 50 50 90 Z">
+                <animate attributeName="stroke-dashoffset" from="300" to="0" dur="1.5s" fill="freeze" />
+            </path>
+            <path stroke-dasharray="100" stroke-dashoffset="100" d="M50 90 L50 20">
+                <animate attributeName="stroke-dashoffset" from="100" to="0" dur="1.5s" fill="freeze" />
+            </path>
+        </svg>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor" class="fixed w-3 h-3 bg-jungle-green rounded-full pointer-events-none z-[9999] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-[scale,opacity] duration-300 ease-out hidden md:block"></div>
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 bg-[rgba(20,40,20,0.6)] backdrop-blur-[20px] border-b border-[rgba(255,255,255,0.1)] transition-all duration-500">
+        <div class="flex justify-between items-center w-full px-12 py-5 max-w-screen-3xl mx-auto">
+            <!-- Brand -->
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-white text-xl">eco</span>
+                <a class="text-2xl font-headline italic tracking-wide text-white" href="#">Verdant</a>
+            </div>
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center gap-10 font-body text-xs tracking-[0.15em] font-light">
+                <a class="nav-link text-white hover:text-sunlight transition-colors p-2" href="#home">HOME</a>
+                <a class="nav-link text-white hover:text-sunlight transition-colors p-2" href="#shop">SHOP</a>
+                <a class="nav-link text-white hover:text-sunlight transition-colors p-2" href="#about">ABOUT</a>
+                <a class="nav-link text-white hover:text-sunlight transition-colors p-2" href="#contact">CONTACT</a>
+            </div>
+            <!-- Trailing Icons -->
+            <div class="flex items-center gap-6">
+                <!-- Cart Icon -->
+                <button id="cart-toggle-btn" class="relative text-white hover:text-sunlight transition-colors duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl" style="font-weight: 300;">shopping_cart</span>
+                    <span id="cart-badge" class="absolute top-1 right-1 bg-sunlight text-surface text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center opacity-0 scale-50 transition-all duration-300">0</span>
+                </button>
+                <!-- Mobile Menu btn -->
+                <button id="mobile-menu-btn" class="md:hidden text-white min-w-[44px] min-h-[44px] flex items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="absolute top-full left-0 w-full bg-[rgba(10,20,10,0.95)] backdrop-blur-[30px] border-b border-[rgba(255,255,255,0.05)] overflow-hidden transition-[max-height] duration-500 max-h-0 md:hidden flex flex-col items-center shadow-2xl">
+            <div class="flex flex-col gap-6 py-8">
+                <a class="nav-link text-white text-sm tracking-[0.2em] uppercase p-2 block text-center" href="#home">HOME</a>
+                <a class="nav-link text-white text-sm tracking-[0.2em] uppercase p-2 block text-center" href="#shop">SHOP</a>
+                <a class="nav-link text-white text-sm tracking-[0.2em] uppercase p-2 block text-center" href="#about">ABOUT</a>
+                <a class="nav-link text-white text-sm tracking-[0.2em] uppercase p-2 block text-center" href="#contact">CONTACT</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Scroll Container -->
+    <div id="home" class="h-[500vh] w-full relative">
+        <!-- Sticky Section -->
+        <div class="sticky top-0 w-full h-screen overflow-hidden flex flex-col justify-center">
+            
+            <!-- Canvas -->
+            <canvas id="hero-canvas" class="absolute inset-0 w-full h-full z-0"></canvas>
+            
+            <!-- Grain Overlay -->
+            <div class="grain-overlay"></div>
+
+            <!-- Deep Gradient Overlay -->
+            <div class="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-[rgba(0,0,0,0.7)] to-transparent z-10 w-full"></div>
+
+            <!-- Text Content -->
+            <div class="relative z-20 px-12 max-w-screen-2xl mx-auto w-full flex flex-col items-center text-center mt-32">
+                <h1 class="font-headline text-6xl md:text-[7rem] tracking-[-0.04em] leading-[0.95] font-bold text-white mb-6 uppercase drop-shadow-lg">
+                    BRING NATURE HOME
+                </h1>
+                <p class="font-body text-lg md:text-xl font-light tracking-[0.2em] text-white max-w-2xl uppercase" style="font-variant: small-caps;">
+                    Premium Plants Delivered To Your Door
+                </p>
+                <div class="mt-12 flex gap-4">
+                    <a href="#shop" class="border border-[rgba(255,255,255,0.4)] bg-transparent text-white hover:bg-jungle-green hover:border-jungle-green transition-all duration-500 ease-out px-10 py-4 font-body text-xs uppercase tracking-[0.15em] font-normal backdrop-blur-sm">
+                        Explore Collection
+                    </a>
+                </div>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 animate-subtle-bounce text-white">
+                <span class="material-symbols-outlined text-3xl opacity-80" style="font-weight: 200;">arrow_downward</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shop Section -->
+    <section id="shop" class="min-h-screen bg-[#0a0f0a] relative z-10 flex flex-col items-center py-32 px-12 max-w-screen-2xl mx-auto">
+        <div class="text-center mb-16 w-full flex flex-col items-center">
+            <h2 class="font-headline text-6xl mb-2 text-white italic tracking-wide">Our Collection</h2>
+            <div class="flex items-center justify-center gap-4 mt-2">
+                <div class="h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.3)] to-transparent w-24"></div>
+                <span class="material-symbols-outlined text-jungle-green text-lg">eco</span>
+                <div class="h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.3)] to-transparent w-24"></div>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="flex flex-wrap justify-center gap-4 mb-20" id="shop-filters">
+            <button class="filter-btn active border border-jungle-green text-white bg-jungle-green px-6 py-2 rounded-full font-body text-sm tracking-widest uppercase transition-all duration-300" data-filter="all">All</button>
+            <button class="filter-btn bg-transparent border border-[rgba(255,255,255,0.2)] text-white hover:border-jungle-green px-6 py-2 rounded-full font-body text-sm tracking-widest uppercase transition-all duration-300" data-filter="indoor">Indoor</button>
+            <button class="filter-btn bg-transparent border border-[rgba(255,255,255,0.2)] text-white hover:border-jungle-green px-6 py-2 rounded-full font-body text-sm tracking-widest uppercase transition-all duration-300" data-filter="outdoor">Outdoor</button>
+            <button class="filter-btn bg-transparent border border-[rgba(255,255,255,0.2)] text-white hover:border-jungle-green px-6 py-2 rounded-full font-body text-sm tracking-widest uppercase transition-all duration-300" data-filter="succulents">Succulents</button>
+            <button class="filter-btn bg-transparent border border-[rgba(255,255,255,0.2)] text-white hover:border-jungle-green px-6 py-2 rounded-full font-body text-sm tracking-widest uppercase transition-all duration-300" data-filter="flowering">Flowering</button>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full" id="product-grid">
+            
+            <!-- Card 1 -->
+            <div class="product-card indoor transition-all duration-[400ms] ease-out hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] hover:border-jungle-green bg-forest-depth border border-[rgba(255,255,255,0.05)] rounded-lg overflow-hidden flex flex-col group">
+                <div class="h-80 w-full relative overflow-hidden bg-[#030603]">
+                    <div class="absolute inset-0 bg-black/40 mix-blend-multiply z-10 transition-opacity duration-[400ms] group-hover:opacity-10 pointer-events-none"></div>
+                    <img src="images/ficus.png" alt="Ficus Lyrata" class="w-full h-full object-cover transition-transform duration-[400ms] ease-out group-hover:scale-105 z-0">
+                </div>
+                <div class="p-6 flex flex-col flex-grow relative bg-forest-depth z-20">
+                    <h3 class="font-headline text-2xl text-white mb-1">Ficus Lyrata</h3>
+                    <p class="font-body text-xs italic text-leaf-mist opacity-60 mb-4">Ficus lyrata</p>
+                    <p class="font-body text-sm text-leaf-mist font-light mb-6 flex-grow">The iconic Fiddle Leaf Fig for bright spaces.</p>
+                    <hr class="border-[rgba(255,255,255,0.08)] mb-5">
+                    <div class="flex items-center justify-between mt-auto">
+                        <span class="font-body text-lg font-bold text-sunlight tracking-wide">₹ 1,200</span>
+                        <button class="add-to-cart-btn flex items-center gap-1 bg-transparent text-white hover:text-sunlight transition-colors duration-300 font-body text-xs uppercase tracking-widest" data-name="Ficus Lyrata" data-price="1200">
+                            <span class="material-symbols-outlined text-sm font-bold pointer-events-none">add</span> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="product-card indoor transition-all duration-[400ms] ease-out hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] hover:border-jungle-green bg-forest-depth border border-[rgba(255,255,255,0.05)] rounded-lg overflow-hidden flex flex-col group">
+                <div class="h-80 w-full relative overflow-hidden bg-[#030603]">
+                    <div class="absolute inset-0 bg-black/40 mix-blend-multiply z-10 transition-opacity duration-[400ms] group-hover:opacity-10 pointer-events-none"></div>
+                    <img src="images/monstera.png" alt="Monstera Deliciosa" class="w-full h-full object-cover transition-transform duration-[400ms] ease-out group-hover:scale-105 z-0">
+                </div>
+                <div class="p-6 flex flex-col flex-grow relative bg-forest-depth z-20">
+                    <h3 class="font-headline text-2xl text-white mb-1">Monstera Deliciosa</h3>
+                    <p class="font-body text-xs italic text-leaf-mist opacity-60 mb-4">Monstera deliciosa</p>
+                    <p class="font-body text-sm text-leaf-mist font-light mb-6 flex-grow">Distinctive split leaves, resilient and stunning.</p>
+                    <hr class="border-[rgba(255,255,255,0.08)] mb-5">
+                    <div class="flex items-center justify-between mt-auto">
+                        <span class="font-body text-lg font-bold text-sunlight tracking-wide">₹ 950</span>
+                        <button class="add-to-cart-btn flex items-center gap-1 bg-transparent text-white hover:text-sunlight transition-colors duration-300 font-body text-xs uppercase tracking-widest" data-name="Monstera Deliciosa" data-price="950">
+                            <span class="material-symbols-outlined text-sm font-bold pointer-events-none">add</span> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="product-card succulents transition-all duration-[400ms] ease-out hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] hover:border-jungle-green bg-forest-depth border border-[rgba(255,255,255,0.05)] rounded-lg overflow-hidden flex flex-col group">
+                <div class="h-80 w-full relative overflow-hidden bg-[#030603]">
+                    <div class="absolute inset-0 bg-black/40 mix-blend-multiply z-10 transition-opacity duration-[400ms] group-hover:opacity-10 pointer-events-none"></div>
+                    <img src="images/aloe.png" alt="Aloe Vera" class="w-full h-full object-cover transition-transform duration-[400ms] ease-out group-hover:scale-105 z-0">
+                </div>
+                <div class="p-6 flex flex-col flex-grow relative bg-forest-depth z-20">
+                    <h3 class="font-headline text-2xl text-white mb-1">Aloe Vera</h3>
+                    <p class="font-body text-xs italic text-leaf-mist opacity-60 mb-4">Aloe barbadensis miller</p>
+                    <p class="font-body text-sm text-leaf-mist font-light mb-6 flex-grow">Sculptural succulent with soothing properties.</p>
+                    <hr class="border-[rgba(255,255,255,0.08)] mb-5">
+                    <div class="flex items-center justify-between mt-auto">
+                        <span class="font-body text-lg font-bold text-sunlight tracking-wide">₹ 350</span>
+                        <button class="add-to-cart-btn flex items-center gap-1 bg-transparent text-white hover:text-sunlight transition-colors duration-300 font-body text-xs uppercase tracking-widest" data-name="Aloe Vera" data-price="350">
+                            <span class="material-symbols-outlined text-sm font-bold pointer-events-none">add</span> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="product-card flowering indoor transition-all duration-[400ms] ease-out hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] hover:border-jungle-green bg-forest-depth border border-[rgba(255,255,255,0.05)] rounded-lg overflow-hidden flex flex-col group">
+                <div class="h-80 w-full relative overflow-hidden bg-[#030603]">
+                    <div class="absolute inset-0 bg-black/40 mix-blend-multiply z-10 transition-opacity duration-[400ms] group-hover:opacity-10 pointer-events-none"></div>
+                    <img src="images/orchid.png" alt="White Orchid" class="w-full h-full object-cover transition-transform duration-[400ms] ease-out group-hover:scale-105 z-0">
+                </div>
+                <div class="p-6 flex flex-col flex-grow relative bg-forest-depth z-20">
+                    <h3 class="font-headline text-2xl text-white mb-1">White Orchid</h3>
+                    <p class="font-body text-xs italic text-leaf-mist opacity-60 mb-4">Phalaenopsis amabilis</p>
+                    <p class="font-body text-sm text-leaf-mist font-light mb-6 flex-grow">Elegant pristine blooms symbolizing beauty.</p>
+                    <hr class="border-[rgba(255,255,255,0.08)] mb-5">
+                    <div class="flex items-center justify-between mt-auto">
+                        <span class="font-body text-lg font-bold text-sunlight tracking-wide">₹ 1,800</span>
+                        <button class="add-to-cart-btn flex items-center gap-1 bg-transparent text-white hover:text-sunlight transition-colors duration-300 font-body text-xs uppercase tracking-widest" data-name="White Orchid" data-price="1800">
+                            <span class="material-symbols-outlined text-sm font-bold pointer-events-none">add</span> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="product-card indoor succulents transition-all duration-[400ms] ease-out hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] hover:border-jungle-green bg-forest-depth border border-[rgba(255,255,255,0.05)] rounded-lg overflow-hidden flex flex-col group">
+                <div class="h-80 w-full relative overflow-hidden bg-[#030603]">
+                    <div class="absolute inset-0 bg-black/40 mix-blend-multiply z-10 transition-opacity duration-[400ms] group-hover:opacity-10 pointer-events-none"></div>
+                    <img src="images/snake_plant.png" alt="Sansevieria" class="w-full h-full object-cover transition-transform duration-[400ms] ease-out group-hover:scale-105 z-0">
+                </div>
+                <div class="p-6 flex flex-col flex-grow relative bg-forest-depth z-20">
+                    <h3 class="font-headline text-2xl text-white mb-1">Sansevieria</h3>
+                    <p class="font-body text-xs italic text-leaf-mist opacity-60 mb-4">Sansevieria trifasciata</p>
+                    <p class="font-body text-sm text-leaf-mist font-light mb-6 flex-grow">The indestructible, structural Snake Plant.</p>
+                    <hr class="border-[rgba(255,255,255,0.08)] mb-5">
+                    <div class="flex items-center justify-between mt-auto">
+                        <span class="font-body text-lg font-bold text-sunlight tracking-wide">₹ 500</span>
+                        <button class="add-to-cart-btn flex items-center gap-1 bg-transparent text-white hover:text-sunlight transition-colors duration-300 font-body text-xs uppercase tracking-widest" data-name="Sansevieria" data-price="500">
+                            <span class="material-symbols-outlined text-sm font-bold pointer-events-none">add</span> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="product-card outdoor transition-all duration-[400ms] ease-out hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] hover:border-jungle-green bg-forest-depth border border-[rgba(255,255,255,0.05)] rounded-lg overflow-hidden flex flex-col group">
+                <div class="h-80 w-full relative overflow-hidden bg-[#030603]">
+                    <div class="absolute inset-0 bg-black/40 mix-blend-multiply z-10 transition-opacity duration-[400ms] group-hover:opacity-10 pointer-events-none"></div>
+                    <img src="images/japanese_maple.png" alt="Japanese Maple" class="w-full h-full object-cover transition-transform duration-[400ms] ease-out group-hover:scale-105 z-0">
+                </div>
+                <div class="p-6 flex flex-col flex-grow relative bg-forest-depth z-20">
+                    <h3 class="font-headline text-2xl text-white mb-1">Japanese Maple</h3>
+                    <p class="font-body text-xs italic text-leaf-mist opacity-60 mb-4">Acer palmatum</p>
+                    <p class="font-body text-sm text-leaf-mist font-light mb-6 flex-grow">Delicate red foliage for serene spaces.</p>
+                    <hr class="border-[rgba(255,255,255,0.08)] mb-5">
+                    <div class="flex items-center justify-between mt-auto">
+                        <span class="font-body text-lg font-bold text-sunlight tracking-wide">₹ 4,500</span>
+                        <button class="add-to-cart-btn flex items-center gap-1 bg-transparent text-white hover:text-sunlight transition-colors duration-300 font-body text-xs uppercase tracking-widest" data-name="Japanese Maple" data-price="4500">
+                            <span class="material-symbols-outlined text-sm font-bold pointer-events-none">add</span> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 7 -->
+            <div class="product-card indoor outdoor transition-all duration-[400ms] ease-out hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] hover:border-jungle-green bg-forest-depth border border-[rgba(255,255,255,0.05)] rounded-lg overflow-hidden flex flex-col group">
+                <div class="h-80 w-full relative overflow-hidden bg-[#030603]">
+                    <div class="absolute inset-0 bg-black/40 mix-blend-multiply z-10 transition-opacity duration-[400ms] group-hover:opacity-10 pointer-events-none"></div>
+                    <img src="images/bird_of_paradise.png" alt="Bird of Paradise" class="w-full h-full object-cover transition-transform duration-[400ms] ease-out group-hover:scale-105 z-0">
+                </div>
+                <div class="p-6 flex flex-col flex-grow relative bg-forest-depth z-20">
+                    <h3 class="font-headline text-2xl text-white mb-1">Bird of Paradise</h3>
+                    <p class="font-body text-xs italic text-leaf-mist opacity-60 mb-4">Strelitzia nicolai</p>
+                    <p class="font-body text-sm text-leaf-mist font-light mb-6 flex-grow">Large paddle-shaped leaves for a tropical vibe.</p>
+                    <hr class="border-[rgba(255,255,255,0.08)] mb-5">
+                    <div class="flex items-center justify-between mt-auto">
+                        <span class="font-body text-lg font-bold text-sunlight tracking-wide">₹ 2,100</span>
+                        <button class="add-to-cart-btn flex items-center gap-1 bg-transparent text-white hover:text-sunlight transition-colors duration-300 font-body text-xs uppercase tracking-widest" data-name="Bird of Paradise" data-price="2100">
+                            <span class="material-symbols-outlined text-sm font-bold pointer-events-none">add</span> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 8 -->
+            <div class="product-card indoor flowering transition-all duration-[400ms] ease-out hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] hover:border-jungle-green bg-forest-depth border border-[rgba(255,255,255,0.05)] rounded-lg overflow-hidden flex flex-col group">
+                <div class="h-80 w-full relative overflow-hidden bg-[#030603]">
+                    <div class="absolute inset-0 bg-black/40 mix-blend-multiply z-10 transition-opacity duration-[400ms] group-hover:opacity-10 pointer-events-none"></div>
+                    <img src="images/peace_lily.png" alt="Peace Lily" class="w-full h-full object-cover transition-transform duration-[400ms] ease-out group-hover:scale-105 z-0">
+                </div>
+                <div class="p-6 flex flex-col flex-grow relative bg-forest-depth z-20">
+                    <h3 class="font-headline text-2xl text-white mb-1">Peace Lily</h3>
+                    <p class="font-body text-xs italic text-leaf-mist opacity-60 mb-4">Spathiphyllum wallisii</p>
+                    <p class="font-body text-sm text-leaf-mist font-light mb-6 flex-grow">Lush dark foliage with pristine white blooms.</p>
+                    <hr class="border-[rgba(255,255,255,0.08)] mb-5">
+                    <div class="flex items-center justify-between mt-auto">
+                        <span class="font-body text-lg font-bold text-sunlight tracking-wide">₹ 650</span>
+                        <button class="add-to-cart-btn flex items-center gap-1 bg-transparent text-white hover:text-sunlight transition-colors duration-300 font-body text-xs uppercase tracking-widest" data-name="Peace Lily" data-price="650">
+                            <span class="material-symbols-outlined text-sm font-bold pointer-events-none">add</span> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="relative z-10 w-full flex flex-col">
+        <!-- Panel 1: Story -->
+        <div class="w-full bg-[#0d160d] py-32 px-12 relative overflow-hidden flex flex-col items-center">
+            <!-- Decorative Quotation Mark -->
+            <div class="absolute left-6 md:left-[10%] top-6 text-[30rem] font-headline text-jungle-green opacity-[0.03] leading-none select-none pointer-events-none fade-in-up" style="transform: translateY(-20%); z-index: 0;">
+                &ldquo;
+            </div>
+            
+            <div class="max-w-screen-xl w-full mx-auto relative z-10 flex flex-col gap-10 items-start">
+                <div class="flex-1 fade-in-up">
+                    <h2 class="font-headline text-5xl md:text-7xl mb-8 text-white tracking-wide">Rooted in Passion</h2>
+                    <div class="w-24 h-px bg-jungle-green mb-10"></div>
+                    <div class="font-body font-light tracking-wide text-leaf-mist opacity-80 text-lg md:text-xl leading-relaxed flex flex-col gap-8 max-w-4xl">
+                        <p>What began as a small, family-run botanical shop has blossomed into Verdant. We believe that a deep connection to nature is fundamental to human well-being, both physically and spiritually. By sourcing the rarest and most structurally beautiful flora from around the globe, our mission is to help you transform stark interiors into breathing, organic everyday environments.</p>
+                        <p>Our expert botanists treat every plant not just as a product, but as a living entity that requires care, respect, and a nurturing environment. We work directly with artisan growers, ensuring that the specimen arriving at your door is nothing short of magnificent, hand-selected to thrive in your space.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="w-full bg-[#0a120a] py-16 px-12 border-y border-[rgba(255,255,255,0.03)] flex justify-center">
+            <div class="max-w-screen-xl w-full mx-auto flex flex-col md:flex-row justify-between items-center text-center gap-10">
+                <div class="flex flex-col items-center fade-in-up">
+                    <span class="font-headline text-6xl text-sunlight font-bold mb-2 tracking-wide"><span class="counter" data-target="500">0</span>+</span>
+                    <span class="font-body text-sm tracking-[0.2em] uppercase text-leaf-mist opacity-70">Plant Varieties</span>
+                </div>
+                <div class="flex flex-col items-center fade-in-up delay-100">
+                    <span class="font-headline text-6xl text-sunlight font-bold mb-2 tracking-wide"><span class="counter" data-target="10000">0</span>+</span>
+                    <span class="font-body text-sm tracking-[0.2em] uppercase text-leaf-mist opacity-70">Happy Customers</span>
+                </div>
+                <div class="flex flex-col items-center fade-in-up delay-200">
+                    <span class="font-headline text-6xl text-sunlight font-bold mb-2 tracking-wide"><span class="counter" data-target="5">0</span></span>
+                    <span class="font-body text-sm tracking-[0.2em] uppercase text-leaf-mist opacity-70">Star Rating</span>
+                </div>
+                <div class="flex flex-col items-center fade-in-up delay-300">
+                    <span class="font-headline text-6xl text-sunlight font-bold mb-2 tracking-wide"><span class="counter" data-target="100">0</span>%</span>
+                    <span class="font-body text-sm tracking-[0.2em] uppercase text-leaf-mist opacity-70">Same Day Dispatch</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel 2: Features -->
+        <div class="w-full bg-[#060a06] py-32 px-12 relative flex flex-col items-center z-10">
+            <div class="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 w-full font-body">
+                <!-- Feature 1 -->
+                <div class="fade-in-up bg-[rgba(255,255,255,0.04)] backdrop-blur-[20px] border border-[rgba(255,255,255,0.08)] rounded-[20px] p-10 flex flex-col items-start transition-all duration-500 hover:bg-[rgba(255,255,255,0.06)] hover:shadow-[0_0_40px_rgba(45,92,45,0.4)] hover:-translate-y-2 group">
+                    <div class="mb-8">
+                        <span class="material-symbols-outlined text-5xl text-jungle-green group-hover:text-sunlight transition-colors duration-500" style="font-weight: 200;">psychiatry</span>
+                    </div>
+                    <h3 class="font-headline text-2xl text-white mb-4 font-bold">Curated by Botanists</h3>
+                    <p class="text-sm font-light tracking-wide text-leaf-mist opacity-80 leading-relaxed">Each botanical specimen is carefully selected by our experts for its unique structure, genetic lineage, and optimal health before it reaches you.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="fade-in-up delay-100 bg-[rgba(255,255,255,0.04)] backdrop-blur-[20px] border border-[rgba(255,255,255,0.08)] rounded-[20px] p-10 flex flex-col items-start transition-all duration-500 hover:bg-[rgba(255,255,255,0.06)] hover:shadow-[0_0_40px_rgba(45,92,45,0.4)] hover:-translate-y-2 group">
+                    <div class="mb-8">
+                        <span class="material-symbols-outlined text-5xl text-jungle-green group-hover:text-sunlight transition-colors duration-500" style="font-weight: 200;">local_shipping</span>
+                    </div>
+                    <h3 class="font-headline text-2xl text-white mb-4 font-bold">Free Delivery</h3>
+                    <p class="text-sm font-light tracking-wide text-leaf-mist opacity-80 leading-relaxed">Enjoy seamless, complimentary doorstep delivery on all curated collections above ₹999. Our custom packaging ensures plants arrive pristine.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="fade-in-up delay-200 bg-[rgba(255,255,255,0.04)] backdrop-blur-[20px] border border-[rgba(255,255,255,0.08)] rounded-[20px] p-10 flex flex-col items-start transition-all duration-500 hover:bg-[rgba(255,255,255,0.06)] hover:shadow-[0_0_40px_rgba(45,92,45,0.4)] hover:-translate-y-2 group">
+                    <div class="mb-8">
+                        <span class="material-symbols-outlined text-5xl text-jungle-green group-hover:text-sunlight transition-colors duration-500" style="font-weight: 200;">support_agent</span>
+                    </div>
+                    <h3 class="font-headline text-2xl text-white mb-4 font-bold">Lifetime Plant Support</h3>
+                    <p class="text-sm font-light tracking-wide text-leaf-mist opacity-80 leading-relaxed">Gain lifetime access to our botanical advisors who are ready to guide you on lighting, watering, propagation, and tailored care routines.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="min-h-screen bg-[#040704] relative z-10 flex flex-col items-center py-32 px-12 overflow-hidden">
+        <div class="text-center mb-16 w-full flex flex-col items-center fade-in-up">
+            <h2 class="font-headline text-5xl mb-2 text-white tracking-wide">What Our Customers Say</h2>
+            <div class="flex items-center justify-center gap-4 mt-4">
+                <div class="h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.2)] to-transparent w-20"></div>
+                <span class="material-symbols-outlined text-jungle-green text-sm">eco</span>
+                <div class="h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.2)] to-transparent w-20"></div>
+            </div>
+        </div>
+
+        <div class="relative w-full max-w-screen-lg mx-auto h-[400px]">
+            <!-- Carousel Items -->
+            <div id="testimonial-carousel" class="w-full h-full relative">
+                
+                <!-- Card 1 -->
+                <div class="testimonial-slide absolute inset-0 opacity-100 transition-opacity duration-1000 ease-in-out flex justify-center z-20">
+                    <div class="w-full max-w-2xl bg-[rgba(255,255,255,0.03)] backdrop-blur-[20px] border border-[rgba(255,255,255,0.08)] rounded-[20px] p-12 flex flex-col items-center text-center relative shadow-[0_0_50px_rgba(30,58,30,0.1)] hover:shadow-[0_0_50px_rgba(30,58,30,0.2)] transition-shadow duration-500">
+                        <span class="material-symbols-outlined text-jungle-green text-[5rem] opacity-20 absolute top-6 left-8" style="font-weight: 200;">format_quote</span>
+                        <div class="flex gap-1 text-sunlight mb-6 z-10">
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                        </div>
+                        <p class="font-headline text-2xl md:text-3xl italic text-white font-light tracking-wide leading-relaxed mb-8 z-10">
+                            "The Monstera Deliciosa I received was breathtakingly massive and incredibly healthy. Verdant's attention to detail is truly unparalleled in the botanical space."
+                        </p>
+                        <hr class="w-16 border-[rgba(255,255,255,0.1)] mb-6 z-10">
+                        <div class="flex flex-col items-center z-10">
+                            <span class="font-body text-lg font-bold text-white mb-1">Eleanor Vance</span>
+                            <span class="flex items-center gap-1 font-body text-xs text-leaf-mist opacity-80 uppercase tracking-widest"><span class="material-symbols-outlined text-[1rem] text-jungle-green">verified</span> Verified Buyer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="testimonial-slide absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out flex justify-center z-10 pointer-events-none">
+                    <div class="w-full max-w-2xl bg-[rgba(255,255,255,0.03)] backdrop-blur-[20px] border border-[rgba(255,255,255,0.08)] rounded-[20px] p-12 flex flex-col items-center text-center relative shadow-[0_0_50px_rgba(30,58,30,0.1)] hover:shadow-[0_0_50px_rgba(30,58,30,0.2)] transition-shadow duration-500">
+                        <span class="material-symbols-outlined text-jungle-green text-[5rem] opacity-20 absolute top-6 left-8" style="font-weight: 200;">format_quote</span>
+                        <div class="flex gap-1 text-sunlight mb-6 z-10">
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                        </div>
+                        <p class="font-headline text-2xl md:text-3xl italic text-white font-light tracking-wide leading-relaxed mb-8 z-10">
+                            "Transformative. The team didn't just sell me plants; they guided me on lighting and humidity. My apartment feels like a lush sanctuary now."
+                        </p>
+                        <hr class="w-16 border-[rgba(255,255,255,0.1)] mb-6 z-10">
+                        <div class="flex flex-col items-center z-10">
+                            <span class="font-body text-lg font-bold text-white mb-1">Julian Thorne</span>
+                            <span class="flex items-center gap-1 font-body text-xs text-leaf-mist opacity-80 uppercase tracking-widest"><span class="material-symbols-outlined text-[1rem] text-jungle-green">verified</span> Verified Buyer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="testimonial-slide absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out flex justify-center z-10 pointer-events-none">
+                    <div class="w-full max-w-2xl bg-[rgba(255,255,255,0.03)] backdrop-blur-[20px] border border-[rgba(255,255,255,0.08)] rounded-[20px] p-12 flex flex-col items-center text-center relative shadow-[0_0_50px_rgba(30,58,30,0.1)] hover:shadow-[0_0_50px_rgba(30,58,30,0.2)] transition-shadow duration-500">
+                        <span class="material-symbols-outlined text-jungle-green text-[5rem] opacity-20 absolute top-6 left-8" style="font-weight: 200;">format_quote</span>
+                        <div class="flex gap-1 text-sunlight mb-6 z-10">
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+                        </div>
+                        <p class="font-headline text-2xl md:text-3xl italic text-white font-light tracking-wide leading-relaxed mb-8 z-10">
+                            "The packaging was an experience in itself. Zero damage despite shipping across the country, and the Ficus Lyrata flourished instantly. 10/10."
+                        </p>
+                        <hr class="w-16 border-[rgba(255,255,255,0.1)] mb-6 z-10">
+                        <div class="flex flex-col items-center z-10">
+                            <span class="font-body text-lg font-bold text-white mb-1">Sophia Lin</span>
+                            <span class="flex items-center gap-1 font-body text-xs text-leaf-mist opacity-80 uppercase tracking-widest"><span class="material-symbols-outlined text-[1rem] text-jungle-green">verified</span> Verified Buyer</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Dots -->
+            <div class="absolute bottom-[-10px] left-1/2 -translate-x-1/2 flex gap-3 z-30">
+                <button class="testi-dot w-6 h-1.5 rounded-full bg-jungle-green transition-all duration-300" onclick="goToTestimonial(0)"></button>
+                <button class="testi-dot w-1.5 h-1.5 rounded-full bg-[rgba(255,255,255,0.2)] hover:bg-[rgba(255,255,255,0.5)] transition-all duration-300" onclick="goToTestimonial(1)"></button>
+                <button class="testi-dot w-1.5 h-1.5 rounded-full bg-[rgba(255,255,255,0.2)] hover:bg-[rgba(255,255,255,0.5)] transition-all duration-300" onclick="goToTestimonial(2)"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="w-full bg-gradient-to-b from-[#0a120a] to-[#142114] py-32 px-12 relative z-10 flex flex-col items-center border-t border-[rgba(255,255,255,0.03)] focus-within:-z-10">
+        <div class="max-w-2xl w-full text-center relative z-10 fade-in-up">
+            <h2 class="font-headline text-4xl md:text-5xl text-white mb-4 tracking-wide font-bold">Join The Verdant Family</h2>
+            <p class="font-body text-leaf-mist opacity-80 tracking-wide mb-10 font-light text-lg">Subscribe for exclusive early access to rare imports, botanical care guides, and insider perks.</p>
+            
+            <form id="newsletter-form" class="relative flex flex-col md:flex-row shadow-[0_15px_40px_rgba(0,0,0,0.5)] rounded-full group mx-auto w-full max-w-lg mb-4" onsubmit="handleSubscribe(event)">
+                <input type="email" id="newsletter-email" placeholder="Enter your email address" required
+                    class="w-full bg-[#030503] text-white placeholder-[rgba(255,255,255,0.4)] border border-[rgba(255,255,255,0.1)] rounded-full md:rounded-r-none px-8 py-5 focus:outline-none focus:border-jungle-green focus:shadow-[0_0_15px_rgba(45,92,45,0.5)] transition-all duration-300 font-body outline-none">
+                <button type="submit" class="mt-4 md:mt-0 bg-white text-surface hover:bg-leaf-mist border border-white md:-ml-1 rounded-full md:rounded-l-none px-10 py-5 font-body font-bold uppercase tracking-widest text-sm transition-all duration-300">
+                    Subscribe
+                </button>
+            </form>
+            <p id="newsletter-msg" class="text-sunlight font-body italic text-sm opacity-0 transition-opacity duration-500 h-6">Welcome to the family 🌿</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-[#050805] relative z-10 flex flex-col items-center py-32 px-12 border-b border-[rgba(255,255,255,0.03)]">
+        <div class="text-center mb-16 fade-in-up">
+            <h2 class="font-headline text-5xl mb-4 text-white tracking-wide">Get In Touch</h2>
+            <p class="font-body font-light tracking-wide max-w-lg mx-auto text-leaf-mist opacity-70">Reach our botanical advisors 24/7 regarding your collection.</p>
+        </div>
+
+        <div class="max-w-screen-xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
+            <!-- Form Area -->
+            <div class="w-full fade-in-up relative mt-2 md:mt-0">
+                <!-- Toast Notification -->
+                <div id="contact-toast" class="absolute -top-20 left-0 right-0 bg-[#162716] border border-jungle-green text-center text-sunlight font-body tracking-wide px-6 py-4 rounded pointer-events-none opacity-0 transform -translate-y-4 transition-all duration-500 z-20 shadow-[0_10px_30px_rgba(45,92,45,0.3)]">
+                    Message sent! We will get back to you within 24 hours 🌿
+                </div>
+
+                <form id="contact-form" class="flex flex-col gap-10" novalidate onsubmit="handleContactSubmit(event)">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div class="relative group input-container">
+                            <input type="text" id="contact-name" name="name" placeholder=" " class="peer w-full bg-transparent text-white border-b border-[rgba(255,255,255,0.2)] pb-2 pt-4 focus:outline-none focus:border-jungle-green focus:shadow-[0_4px_15px_-4px_rgba(45,92,45,0.3)] transition-all duration-300 font-body">
+                            <label for="contact-name" class="absolute left-0 top-4 text-leaf-mist opacity-70 font-body text-sm font-light transition-all duration-300 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-jungle-green peer-focus:opacity-100 peer-[:not(:placeholder-shown)]:-top-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:opacity-100 pointer-events-none">Full Name</label>
+                            <span class="error-msg absolute -bottom-5 left-0 text-red-500 text-xs font-body opacity-0 transition-opacity duration-300">Name is required</span>
+                        </div>
+                        <div class="relative group input-container">
+                            <input type="email" id="contact-email" name="email" placeholder=" " class="peer w-full bg-transparent text-white border-b border-[rgba(255,255,255,0.2)] pb-2 pt-4 focus:outline-none focus:border-jungle-green focus:shadow-[0_4px_15px_-4px_rgba(45,92,45,0.3)] transition-all duration-300 font-body">
+                            <label for="contact-email" class="absolute left-0 top-4 text-leaf-mist opacity-70 font-body text-sm font-light transition-all duration-300 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-jungle-green peer-focus:opacity-100 peer-[:not(:placeholder-shown)]:-top-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:opacity-100 pointer-events-none">Email Address</label>
+                            <span class="error-msg absolute -bottom-5 left-0 text-red-500 text-xs font-body opacity-0 transition-opacity duration-300">Valid email is required</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div class="relative group input-container">
+                            <input type="tel" id="contact-phone" name="phone" placeholder=" " class="peer w-full bg-transparent text-white border-b border-[rgba(255,255,255,0.2)] pb-2 pt-4 focus:outline-none focus:border-jungle-green focus:shadow-[0_4px_15px_-4px_rgba(45,92,45,0.3)] transition-all duration-300 font-body">
+                            <label for="contact-phone" class="absolute left-0 top-4 text-leaf-mist opacity-70 font-body text-sm font-light transition-all duration-300 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-jungle-green peer-focus:opacity-100 peer-[:not(:placeholder-shown)]:-top-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:opacity-100 pointer-events-none">Phone Number (Optional)</label>
+                        </div>
+                        <div class="relative group input-container">
+                            <input type="text" id="contact-subject" name="subject" placeholder=" " class="peer w-full bg-transparent text-white border-b border-[rgba(255,255,255,0.2)] pb-2 pt-4 focus:outline-none focus:border-jungle-green focus:shadow-[0_4px_15px_-4px_rgba(45,92,45,0.3)] transition-all duration-300 font-body">
+                            <label for="contact-subject" class="absolute left-0 top-4 text-leaf-mist opacity-70 font-body text-sm font-light transition-all duration-300 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-jungle-green peer-focus:opacity-100 peer-[:not(:placeholder-shown)]:-top-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:opacity-100 pointer-events-none">Subject</label>
+                            <span class="error-msg absolute -bottom-5 left-0 text-red-500 text-xs font-body opacity-0 transition-opacity duration-300">Subject is required</span>
+                        </div>
+                    </div>
+                    <div class="relative group input-container h-32">
+                        <textarea id="contact-message" name="message" placeholder=" " class="peer w-full h-full resize-none bg-transparent text-white border-b border-[rgba(255,255,255,0.2)] pb-2 pt-4 focus:outline-none focus:border-jungle-green focus:shadow-[0_4px_15px_-4px_rgba(45,92,45,0.3)] transition-all duration-300 font-body"></textarea>
+                        <label for="contact-message" class="absolute left-0 top-4 text-leaf-mist opacity-70 font-body text-sm font-light transition-all duration-300 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-jungle-green peer-focus:opacity-100 peer-[:not(:placeholder-shown)]:-top-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:opacity-100 pointer-events-none">Your Message</label>
+                        <span class="error-msg absolute -bottom-5 left-0 text-red-500 text-xs font-body opacity-0 transition-opacity duration-300">Message cannot be empty</span>
+                    </div>
+                    <button type="submit" class="self-start bg-transparent border border-jungle-green text-white hover:bg-jungle-green hover:text-white transition-all duration-500 px-12 py-4 font-body text-xs uppercase tracking-[0.2em] font-normal hover:shadow-[0_0_20px_rgba(45,92,45,0.4)] mt-4">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Info Area -->
+            <div class="w-full flex flex-col gap-6 fade-in-up delay-100">
+                <div class="flex items-center gap-6 p-6 bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.05)] rounded-[15px] hover:-translate-y-1 hover:bg-[rgba(255,255,255,0.04)] transition-all duration-300">
+                    <span class="material-symbols-outlined text-4xl text-jungle-green" style="font-weight: 200;">location_on</span>
+                    <div>
+                        <h4 class="font-headline text-xl text-white mb-1">Our Atelier</h4>
+                        <p class="font-body text-leaf-mist opacity-70 text-sm font-light tracking-wide">14 Botanical Way, Lower East<br>New York, NY 10002</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6 p-6 bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.05)] rounded-[15px] hover:-translate-y-1 hover:bg-[rgba(255,255,255,0.04)] transition-all duration-300">
+                    <span class="material-symbols-outlined text-4xl text-jungle-green" style="font-weight: 200;">phone_in_talk</span>
+                    <div>
+                        <h4 class="font-headline text-xl text-white mb-1">Direct Line</h4>
+                        <p class="font-body text-leaf-mist opacity-70 text-sm font-light tracking-wide">+1 (555) 234-5678<br>Mon-Sat, 9AM to 7PM EST</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6 p-6 bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.05)] rounded-[15px] hover:-translate-y-1 hover:bg-[rgba(255,255,255,0.04)] transition-all duration-300">
+                    <span class="material-symbols-outlined text-4xl text-jungle-green" style="font-weight: 200;">mail</span>
+                    <div>
+                        <h4 class="font-headline text-xl text-white mb-1">Electronic Mail</h4>
+                        <p class="font-body text-leaf-mist opacity-70 text-sm font-light tracking-wide"><a href="mailto:hello@verdant.com" class="hover:text-white transition-colors">hello@verdant.com</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Google Maps Embed -->
+        <div class="w-full max-w-screen-xl mx-auto h-[400px] mt-24 rounded-[20px] overflow-hidden border border-[rgba(255,255,255,0.05)] fade-in-up delay-200">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.7547192667794!2d-73.99222402447957!3d40.72336333692482!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259846b0aab01%3A0x6bba847c2b3e8392!2sLower%20East%20Side%2C%20New%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" 
+                width="100%" 
+                height="100%" 
+                style="border:0; filter: grayscale(100%) invert(90%) hue-rotate(180deg) contrast(1.2);" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black w-full pt-20 pb-10 px-12 z-10 relative border-t border-[rgba(255,255,255,0.05)]">
+        <div class="max-w-screen-xl mx-auto">
+            <div class="flex flex-col items-center text-center mb-16 fade-in-up">
+                <span class="material-symbols-outlined text-jungle-green text-3xl mb-2">eco</span>
+                <h2 class="text-4xl font-headline italic tracking-wide text-white mb-2">Verdant</h2>
+                <p class="font-body text-leaf-mist opacity-60 text-sm tracking-[0.15em] uppercase">Bringing Nature Home Since 2020</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left mb-16 fade-in-up delay-100">
+                <div class="flex flex-col gap-4 items-center md:items-start">
+                    <h5 class="font-headline text-lg text-white mb-2">Quick Links</h5>
+                    <a href="#home" class="font-body text-sm font-light text-leaf-mist opacity-70 hover:opacity-100 hover:text-white transition-colors">Home</a>
+                    <a href="#shop" class="font-body text-sm font-light text-leaf-mist opacity-70 hover:opacity-100 hover:text-white transition-colors">Shop</a>
+                    <a href="#about" class="font-body text-sm font-light text-leaf-mist opacity-70 hover:opacity-100 hover:text-white transition-colors">Our Story</a>
+                    <a href="#contact" class="font-body text-sm font-light text-leaf-mist opacity-70 hover:opacity-100 hover:text-white transition-colors">Contact</a>
+                </div>
+                <div class="flex flex-col gap-4 items-center md:items-start">
+                    <h5 class="font-headline text-lg text-white mb-2">Categories</h5>
+                    <a href="#" class="font-body text-sm font-light text-leaf-mist opacity-70 hover:opacity-100 hover:text-white transition-colors">Indoor Plants</a>
+                    <a href="#" class="font-body text-sm font-light text-leaf-mist opacity-70 hover:opacity-100 hover:text-white transition-colors">Outdoor Trees</a>
+                    <a href="#" class="font-body text-sm font-light text-leaf-mist opacity-70 hover:opacity-100 hover:text-white transition-colors">Succulents & Cacti</a>
+                    <a href="#" class="font-body text-sm font-light text-leaf-mist opacity-70 hover:opacity-100 hover:text-white transition-colors">Planters & Care</a>
+                </div>
+                <div class="flex flex-col gap-4 items-center md:items-start">
+                    <h5 class="font-headline text-lg text-white mb-2">Follow Us</h5>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-leaf-mist opacity-70 hover:opacity-100 hover:text-jungle-green transition-colors">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="#" class="text-leaf-mist opacity-70 hover:opacity-100 hover:text-jungle-green transition-colors">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                        </a>
+                        <a href="#" class="text-leaf-mist opacity-70 hover:opacity-100 hover:text-jungle-green transition-colors">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-[rgba(255,255,255,0.05)] pt-8 flex justify-center text-center">
+                <p class="font-body text-xs text-leaf-mist opacity-50 tracking-wider">© 2025 Verdant. All rights reserved. Crafted with <span class="text-jungle-green opacity-100">💚</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Buttons -->
+    <a href="https://wa.me/something" class="fixed bottom-6 right-6 z-40 bg-jungle-green text-white p-4 rounded-full shadow-[0_0_20px_rgba(45,92,45,0.4)] animate-pulse-glow hover:scale-110 transition-transform flex items-center justify-center min-w-[44px] min-h-[44px]">
+        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.669.074-.321-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.149-.173.198-.297.298-.495.099-.198.05-.371-.025-.52-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.718 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+    </a>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-6 left-6 z-40 bg-[rgba(255,255,255,0.05)] text-white p-4 rounded-full border border-[rgba(255,255,255,0.1)] hover:bg-jungle-green opacity-0 pointer-events-none transition-all duration-500 transform translate-y-10 min-w-[44px] min-h-[44px] flex items-center justify-center shadow-[0_0_15px_rgba(0,0,0,0.5)]" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <span class="material-symbols-outlined transform -translate-y-px">arrow_upward</span>
+    </button>
+
+    <!-- Cart Settings -->
+    <div id="cart-overlay" class="fixed inset-0 bg-[rgba(0,5,0,0.8)] z-[60] opacity-0 pointer-events-none transition-opacity duration-300 cursor-pointer"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-[rgba(10,15,10,0.95)] backdrop-blur-[20px] border-l border-[rgba(255,255,255,0.1)] z-[70] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] flex flex-col shadow-2xl">
+        <div class="flex items-center justify-between p-6 border-b border-[rgba(255,255,255,0.1)]">
+            <h2 class="font-headline text-2xl text-white">Your Cart</h2>
+            <button id="close-cart-btn" class="text-leaf-mist hover:text-white transition-colors">
+                <span class="material-symbols-outlined hover:rotate-90 transition-transform duration-300">close</span>
+            </button>
+        </div>
+        
+        <div id="cart-items-container" class="flex-grow p-6 overflow-y-auto flex flex-col gap-0 relative">
+            <!-- Items injected via JS -->
+            <div id="empty-cart-msg" class="absolute inset-0 flex flex-col items-center justify-center opacity-50 px-6">
+                <span class="material-symbols-outlined text-5xl mb-4 text-leaf-mist">eco</span>
+                <p class="font-body italic font-light text-leaf-mist">Your cart is empty</p>
+            </div>
+        </div>
+
+        <div class="p-6 bg-[#080d08]">
+            <div class="flex justify-between items-center mb-4">
+                <span class="font-body text-leaf-mist opacity-80 text-sm">Subtotal</span>
+                <span id="cart-subtotal" class="font-body text-white">₹ 0</span>
+            </div>
+            <hr class="border-[rgba(255,255,255,0.08)] mb-4">
+            <div class="flex justify-between items-center mb-6">
+                <span class="font-body text-leaf-mist text-lg">Total</span>
+                <span id="cart-total" class="font-body text-3xl text-white font-bold tracking-wide">₹ 0</span>
+            </div>
+            <button class="w-full bg-jungle-green hover:bg-[#387338] text-white py-4 rounded font-body text-sm uppercase tracking-widest font-bold transition-all duration-300 hover:shadow-[0_0_20px_rgba(45,92,45,0.6)]">Proceed to Checkout</button>
+        </div>
+    </div>
+
+
+    <!-- Scripts -->
+    <script>
+        const canvas = document.getElementById("hero-canvas");
+        const ctx = canvas.getContext("2d", { alpha: false });
+
+        // Set dimensions
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            renderFrame();
+        }
+        window.addEventListener('resize', resize);
+
+        const frameCount = 240;
+        const currentFrame = index => `frames/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.jpg`;
+
+        const images = [];
+        let objHoverIndex = 0;
+
+        function drawImageCover(img) {
+            if (!img || !img.complete || img.naturalWidth === 0) return;
+            const w = canvas.width;
+            const h = canvas.height;
+            const imgRatio = img.width / img.height;
+            const canvasRatio = w / h;
+            let drawWidth, drawHeight, offsetX, offsetY;
+
+            if (canvasRatio > imgRatio) {
+                drawWidth = w;
+                drawHeight = w / imgRatio;
+                offsetX = 0;
+                offsetY = (h - drawHeight) / 2;
+            } else {
+                drawWidth = h * imgRatio;
+                drawHeight = h;
+                offsetX = (w - drawWidth) / 2;
+                offsetY = 0;
+            }
+            ctx.clearRect(0, 0, w, h);
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        }
+
+        function renderFrame() {
+            if (images[objHoverIndex]) {
+                drawImageCover(images[objHoverIndex]);
+            }
+        }
+
+        // Preload all frames
+        for (let i = 0; i < frameCount; i++) {
+            const img = new Image();
+            img.src = currentFrame(i);
+            img.onload = () => {
+                if (i === 0) resize(); // Initialize on the first frame
+            };
+            images.push(img);
+        }
+
+        // Scroll listener to update the canvas smoothly
+        let ticking = false;
+        const scrollContainer = document.getElementById('home');
+
+        window.addEventListener('scroll', () => {
+             if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const maxScroll = scrollContainer.clientHeight - window.innerHeight;
+                    
+                    let scrollFraction = window.scrollY / maxScroll;
+                    scrollFraction = Math.max(0, Math.min(1, scrollFraction));
+                    
+                    const frameIndex = Math.floor(scrollFraction * (frameCount - 1));
+                    
+                    if (frameIndex !== objHoverIndex) {
+                        objHoverIndex = frameIndex;
+                        renderFrame();
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // Shop Filtering Logic
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const productCards = document.querySelectorAll('.product-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-jungle-green', 'border-jungle-green');
+                    b.classList.add('bg-transparent', 'border-[rgba(255,255,255,0.2)]');
+                });
+                btn.classList.add('bg-jungle-green', 'border-jungle-green');
+                btn.classList.remove('bg-transparent', 'border-[rgba(255,255,255,0.2)]');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                productCards.forEach(card => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.95)';
+                    
+                    setTimeout(() => {
+                        if (filterValue === 'all' || card.classList.contains(filterValue)) {
+                            card.style.display = 'flex';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'scale(1)';
+                            }, 50);
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    }, 300);
+                });
+            });
+        });
+
+        // --- Cart System Logic ---
+        const cartToggleBtn = document.getElementById('cart-toggle-btn');
+        const closeCartBtn = document.getElementById('close-cart-btn');
+        const cartDrawer = document.getElementById('cart-drawer');
+        const cartOverlay = document.getElementById('cart-overlay');
+        const cartItemsContainer = document.getElementById('cart-items-container');
+        const emptyCartMsg = document.getElementById('empty-cart-msg');
+        const cartTotalEl = document.getElementById('cart-total');
+        const cartBadge = document.getElementById('cart-badge');
+
+        let cart = [];
+
+        function toggleCart() {
+            const isClosed = cartDrawer.classList.contains('translate-x-full');
+            if (isClosed) {
+                cartDrawer.classList.remove('translate-x-full');
+                cartOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                cartDrawer.classList.add('translate-x-full');
+                cartOverlay.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        cartToggleBtn.addEventListener('click', toggleCart);
+        closeCartBtn.addEventListener('click', toggleCart);
+        cartOverlay.addEventListener('click', toggleCart);
+
+        function updateCartUI() {
+            // Update Navigation Badge
+            const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+            if (totalItems > 0) {
+                cartBadge.innerText = totalItems;
+                cartBadge.classList.remove('opacity-0', 'scale-50');
+                cartBadge.classList.add('scale-100');
+            } else {
+                cartBadge.classList.add('opacity-0', 'scale-50');
+                cartBadge.classList.remove('scale-100');
+            }
+
+            // Update Drawer Items
+            const itemsInDrawer = document.querySelectorAll('.cart-item-wrapper');
+            itemsInDrawer.forEach(el => el.remove()); // clear older items safely
+
+            let totalCost = 0;
+
+            if (cart.length === 0) {
+                emptyCartMsg.style.display = 'flex';
+            } else {
+                emptyCartMsg.style.display = 'none';
+                cart.forEach((item, index) => {
+                    const itemTotal = item.price * item.quantity;
+                    totalCost += itemTotal;
+
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'cart-item-wrapper flex flex-col';
+                    itemEl.innerHTML = `
+                        <div class="cart-item-row flex justify-between items-center py-5">
+                            <div class="flex-grow pr-4">
+                                <h4 class="font-headline text-xl text-white mb-1 font-medium">${item.name}</h4>
+                                <p class="font-body text-sunlight text-sm">₹ ${(item.price).toLocaleString()}</p>
+                            </div>
+                            <div class="flex flex-col items-end gap-3 w-28">
+                                <button class="text-leaf-mist hover:text-red-400 transition-colors p-1 flex items-center justify-center" onclick="removeItem(${index})" title="Remove item">
+                                    <span class="material-symbols-outlined text-[1.2rem]">delete</span>
+                                </button>
+                                <div class="flex items-center justify-between w-full bg-[rgba(255,255,255,0.05)] rounded-full px-2 py-1 border border-[rgba(255,255,255,0.1)]">
+                                    <button class="text-leaf-mist hover:text-white pb-0.5 w-6 h-6 flex items-center justify-center transition-colors" onclick="updateQty(${index}, -1)">
+                                        <span class="material-symbols-outlined text-[1.1rem]">remove</span>
+                                    </button>
+                                    <span class="text-white text-sm font-body w-4 text-center select-none">${item.quantity}</span>
+                                    <button class="text-leaf-mist hover:text-white pb-0.5 w-6 h-6 flex items-center justify-center transition-colors" onclick="updateQty(${index}, 1)">
+                                        <span class="material-symbols-outlined text-[1.1rem]">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        ${index < cart.length - 1 ? '<hr class="border-[rgba(255,255,255,0.05)] w-full">' : ''}
+                    `;
+                    cartItemsContainer.appendChild(itemEl);
+                });
+            }
+
+            // Update Total Price
+            const formattedTotal = `₹ ${totalCost.toLocaleString()}`;
+            document.getElementById('cart-subtotal').innerText = formattedTotal;
+            cartTotalEl.innerText = formattedTotal;
+        }
+
+        // Global functions for inline onclick access
+        window.updateQty = function(index, change) {
+            cart[index].quantity += change;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        };
+
+        window.removeItem = function(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        };
+
+        // Hook up Add to Cart functionality dynamically
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const name = e.target.getAttribute('data-name');
+                const price = parseInt(e.target.getAttribute('data-price'));
+
+                const existingItem = cart.find(i => i.name === name);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ name, price, quantity: 1 });
+                }
+
+                updateCartUI();
+
+                // Trigger badge bounce animation
+                cartBadge.classList.remove('animate-badge-bounce');
+                void cartBadge.offsetWidth; // force reflow
+                cartBadge.classList.add('animate-badge-bounce');
+
+                // Button text visual feedback
+                const origHTML = e.target.innerHTML;
+                e.target.innerHTML = `<span class="material-symbols-outlined text-sm font-bold pointer-events-none">check</span> Added`;
+                e.target.classList.add('bg-sunlight', 'text-surface');
+                e.target.classList.remove('text-white');
+                setTimeout(() => {
+                    e.target.innerHTML = origHTML;
+                    e.target.classList.add('text-white');
+                    e.target.classList.remove('bg-sunlight', 'text-surface');
+                }, 1500);
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+
+        // Animated Counters
+        const counters = document.querySelectorAll('.counter');
+        const counterObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = +counter.getAttribute('data-target');
+                    const duration = 2000;
+                    
+                    let current = 0;
+                    const increment = target / (duration / 16); 
+                    
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            counter.innerText = target.toLocaleString();
+                            clearInterval(timer);
+                        } else {
+                            counter.innerText = Math.ceil(current).toLocaleString();
+                        }
+                    }, 16);
+                    observer.unobserve(counter);
+                }
+            });
+        }, observerOptions);
+
+        counters.forEach(counter => counterObserver.observe(counter));
+
+        // Testimonial Carousel Logic
+        let currentTesti = 0;
+        const testiSlides = document.querySelectorAll('.testimonial-slide');
+        const testiDots = document.querySelectorAll('.testi-dot');
+        let testiInterval;
+
+        function updateTestimonial(index) {
+            testiSlides[currentTesti].classList.remove('opacity-100', 'z-20');
+            testiSlides[currentTesti].classList.add('opacity-0', 'z-10', 'pointer-events-none');
+            testiDots[currentTesti].classList.remove('w-6', 'bg-jungle-green');
+            testiDots[currentTesti].classList.add('w-1.5', 'bg-[rgba(255,255,255,0.2)]');
+
+            currentTesti = index;
+
+            testiSlides[currentTesti].classList.remove('opacity-0', 'z-10', 'pointer-events-none');
+            testiSlides[currentTesti].classList.add('opacity-100', 'z-20');
+            testiDots[currentTesti].classList.remove('w-1.5', 'bg-[rgba(255,255,255,0.2)]');
+            testiDots[currentTesti].classList.add('w-6', 'bg-jungle-green');
+        }
+
+        window.goToTestimonial = function(index) {
+            clearInterval(testiInterval);
+            updateTestimonial(index);
+            startTestiAutoPlay();
+        };
+
+        function startTestiAutoPlay() {
+            testiInterval = setInterval(() => {
+                let next = (currentTesti + 1) % testiSlides.length;
+                updateTestimonial(next);
+            }, 5000);
+        }
+        startTestiAutoPlay();
+
+        // Newsletter Logic
+        window.handleSubscribe = function(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('newsletter-email');
+            const msg = document.getElementById('newsletter-msg');
+            const email = emailInput.value;
+            
+            // Simple validation simulation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if(emailPattern.test(email)) {
+                // Success
+                msg.classList.remove('opacity-0', 'text-red-400');
+                msg.classList.add('opacity-100', 'text-sunlight');
+                msg.innerText = 'Welcome to the family 🌿';
+                emailInput.value = '';
+                emailInput.blur();
+                
+                // Hide after 4s
+                setTimeout(() => {
+                    msg.classList.remove('opacity-100');
+                    msg.classList.add('opacity-0');
+                }, 4000);
+            } else {
+                // Invalid trigger shake
+                emailInput.classList.remove('focus:border-jungle-green');
+                emailInput.classList.add('animate-subtle-shake');
+                
+                msg.classList.remove('opacity-0', 'text-sunlight');
+                msg.classList.add('opacity-100', 'text-red-400');
+                msg.innerText = 'Please enter a valid email address.';
+                
+                setTimeout(() => {
+                    emailInput.classList.remove('animate-subtle-shake');
+                    emailInput.classList.add('focus:border-jungle-green');
+                    msg.classList.remove('opacity-100');
+                    msg.classList.add('opacity-0');
+                }, 2000);
+            }
+        };
+
+        // Contact Form Logic
+        window.handleContactSubmit = function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const name = document.getElementById('contact-name');
+            const email = document.getElementById('contact-email');
+            const subject = document.getElementById('contact-subject');
+            const message = document.getElementById('contact-message');
+            const toast = document.getElementById('contact-toast');
+
+            let isValid = true;
+            
+            const triggerError = (input) => {
+                input.classList.remove('border-[rgba(255,255,255,0.2)]', 'focus:border-jungle-green');
+                input.classList.add('border-red-500', 'focus:border-red-500');
+                input.nextElementSibling.nextElementSibling.classList.remove('opacity-0');
+                input.nextElementSibling.nextElementSibling.classList.add('opacity-100');
+                isValid = false;
+            };
+
+            const clearError = (input) => {
+                input.classList.add('border-[rgba(255,255,255,0.2)]', 'focus:border-jungle-green');
+                input.classList.remove('border-red-500', 'focus:border-red-500');
+                input.nextElementSibling.nextElementSibling.classList.remove('opacity-100');
+                input.nextElementSibling.nextElementSibling.classList.add('opacity-0');
+            }
+
+            if (!name.value.trim()) { triggerError(name); } else { clearError(name); }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email.value)) { triggerError(email); } else { clearError(email); }
+
+            if (!subject.value.trim()) { triggerError(subject); } else { clearError(subject); }
+
+            if (!message.value.trim()) { triggerError(message); } else { clearError(message); }
+
+            if (isValid) {
+                toast.classList.remove('opacity-0', '-translate-y-4');
+                toast.classList.add('opacity-100', 'translate-y-0');
+                form.reset();
+
+                setTimeout(() => {
+                    toast.classList.remove('opacity-100', 'translate-y-0');
+                    toast.classList.add('opacity-0', '-translate-y-4');
+                }, 4000);
+            }
+        };
+
+        // 1. Loader Fade Out
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('page-loader');
+            if(loader) {
+                setTimeout(() => {
+                    loader.classList.add('opacity-0');
+                    setTimeout(() => loader.remove(), 1000);
+                }, 1500);
+            }
+        });
+
+        // 2. Custom Cursor
+        const cursor = document.getElementById('custom-cursor');
+        if(cursor && window.innerWidth >= 768) {
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let cursorX = mouseX;
+            let cursorY = mouseY;
+            
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            document.querySelectorAll('a, button, input, textarea, select, .filter-btn').forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('scale-[3]', 'opacity-50'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('scale-[3]', 'opacity-50'));
+            });
+
+            const renderCursor = () => {
+                cursorX += (mouseX - cursorX) * 0.2;
+                cursorY += (mouseY - cursorY) * 0.2;
+                cursor.style.left = cursorX + 'px';
+                cursor.style.top = cursorY + 'px';
+                requestAnimationFrame(renderCursor);
+            };
+            renderCursor();
+        }
+
+        // 3. Navbar scroll & Back to Top
+        const mainNav = document.getElementById('navbar');
+        const backToTop = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                if(mainNav) {
+                    mainNav.classList.remove('bg-[rgba(20,40,20,0.6)]', 'backdrop-blur-[20px]');
+                    mainNav.classList.add('bg-[rgba(10,20,10,0.95)]', 'backdrop-blur-[30px]');
+                }
+            } else {
+                if(mainNav) {
+                    mainNav.classList.add('bg-[rgba(20,40,20,0.6)]', 'backdrop-blur-[20px]');
+                    mainNav.classList.remove('bg-[rgba(10,20,10,0.95)]', 'backdrop-blur-[30px]');
+                }
+            }
+
+            if(window.scrollY > 600) {
+                if(backToTop) {
+                    backToTop.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-10');
+                    backToTop.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                }
+            } else {
+                if(backToTop) {
+                    backToTop.classList.add('opacity-0', 'pointer-events-none', 'translate-y-10');
+                    backToTop.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                }
+            }
+        });
+
+        // 4. Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if(mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                if (mobileMenu.style.maxHeight) {
+                    mobileMenu.style.maxHeight = null;
+                } else {
+                    mobileMenu.style.maxHeight = mobileMenu.scrollHeight + "px";
+                }
+            });
+            document.querySelectorAll('#mobile-menu a').forEach(el => {
+                el.addEventListener('click', () => {
+                    mobileMenu.style.maxHeight = null;
+                });
+            });
+        }
+
+        // 5. Stagger Headings by Words
+        document.querySelectorAll('h1.font-headline, h2.font-headline').forEach(heading => {
+            if(heading.querySelectorAll('*').length === 0) {
+                const words = heading.innerText.trim().split(/\s+/);
+                heading.innerText = '';
+                words.forEach((word, idx) => {
+                    const span = document.createElement('span');
+                    span.innerText = word + ' ';
+                    span.className = 'inline-block opacity-0 translate-y-8 transition-all duration-[800ms] ease-[cubic-bezier(0.2,0.8,0.2,1)]';
+                    span.style.transitionDelay = `${idx * 100}ms`;
+                    heading.appendChild(span);
+                });
+                
+                const staggerObserver = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if(entry.isIntersecting) {
+                            entry.target.querySelectorAll('span').forEach(sp => {
+                                sp.classList.remove('opacity-0', 'translate-y-8');
+                                sp.classList.add('opacity-100', 'translate-y-0');
+                            });
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+                staggerObserver.observe(heading);
+            }
+        });
+
+    </script>
+</body>
+</html>
